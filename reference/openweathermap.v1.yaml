@@ -321,6 +321,20 @@ paths:
       responses:
         '200':
           description: OK
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/unauthorized_response'
       operationId: get-weather
       parameters:
         - schema:
@@ -377,6 +391,12 @@ components:
         - lastName
         - email
         - emailVerified
+    unauthorized_response:
+      title: unauthorized_response
+      type: object
+      properties:
+        id:
+          type: string
   securitySchemes:
     app_id:
       name: API Key
