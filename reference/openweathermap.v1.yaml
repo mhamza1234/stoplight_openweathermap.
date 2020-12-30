@@ -29,7 +29,135 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                description: ''
+                type: object
+                properties:
+                  coord:
+                    type: object
+                    required:
+                      - lon
+                      - lat
+                    properties:
+                      lon:
+                        type: number
+                      lat:
+                        type: number
+                  weather:
+                    type: array
+                    uniqueItems: true
+                    minItems: 1
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                        main:
+                          type: string
+                          minLength: 1
+                        description:
+                          type: string
+                          minLength: 1
+                        icon:
+                          type: string
+                          minLength: 1
+                      required:
+                        - id
+                        - main
+                        - description
+                        - icon
+                  base:
+                    type: string
+                    minLength: 1
+                  main:
+                    type: object
+                    required:
+                      - temp
+                      - feels_like
+                      - temp_min
+                      - temp_max
+                      - pressure
+                      - humidity
+                    properties:
+                      temp:
+                        type: number
+                      feels_like:
+                        type: number
+                      temp_min:
+                        type: number
+                      temp_max:
+                        type: number
+                      pressure:
+                        type: number
+                      humidity:
+                        type: number
+                  visibility:
+                    type: number
+                  wind:
+                    type: object
+                    required:
+                      - speed
+                      - deg
+                    properties:
+                      speed:
+                        type: number
+                      deg:
+                        type: number
+                  clouds:
+                    type: object
+                    required:
+                      - all
+                    properties:
+                      all:
+                        type: number
+                  dt:
+                    type: number
+                  sys:
+                    type: object
+                    required:
+                      - type
+                      - id
+                      - country
+                      - sunrise
+                      - sunset
+                    properties:
+                      type:
+                        type: number
+                      id:
+                        type: number
+                      country:
+                        type: string
+                        minLength: 1
+                      sunrise:
+                        type: number
+                      sunset:
+                        type: number
+                      '':
+                        type: string
+                  timezone:
+                    type: number
+                  id:
+                    type: number
+                  name:
+                    type: string
+                    minLength: 1
+                  cod:
+                    type: number
+                  the name:
+                    type: string
+                required:
+                  - coord
+                  - weather
+                  - base
+                  - main
+                  - visibility
+                  - wind
+                  - clouds
+                  - dt
+                  - sys
+                  - timezone
+                  - id
+                  - name
+                  - cod
               examples:
                 Get User Alice Smith:
                   value:
@@ -40,8 +168,44 @@ paths:
                     dateOfBirth: '1997-10-31'
                     emailVerified: true
                     signUpDate: '2019-08-24'
-        '404':
-          description: User Not Found
+                example-2:
+                  value:
+                    coord:
+                      lon: -121.95
+                      lat: 37.35
+                    weather:
+                      - id: 803
+                        main: Clouds
+                        description: broken clouds
+                        icon: 04n
+                    base: stations
+                    main:
+                      temp: 45.25
+                      feels_like: 41.16
+                      temp_min: 41
+                      temp_max: 50
+                      pressure: 1026
+                      humidity: 75
+                    visibility: 16093
+                    wind:
+                      speed: 2.57
+                      deg: 36
+                    clouds:
+                      all: 75
+                    dt: 1579415808
+                    sys:
+                      type: 1
+                      id: 5845
+                      country: US
+                      sunrise: 1579360793
+                      sunset: 1579396557
+                    timezone: -28800
+                    id: 0
+                    name: Santa Clara
+                    cod: 200
+          headers: {}
+        '201':
+          description: Created
       operationId: get-users-userId
       description: Retrieve the information of the user with the matching user ID.
     patch:
@@ -150,6 +314,26 @@ paths:
                   dateOfBirth: '1996-08-24'
         description: Post the necessary fields for the API to create a new user.
       description: Create a new user.
+  /weather:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+      operationId: get-weather
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: zip
+          description: '**zip code **. Search by Zip Code'
+        - schema:
+            type: string
+          in: query
+          name: city
+          description: '** city *** Search by City'
+      description: ''
 components:
   schemas:
     User:
@@ -198,3 +382,20 @@ components:
       name: API Key
       type: apiKey
       in: query
+  responses:
+    '200':
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+              '':
+                type: string
+        application/xml:
+          schema:
+            type: object
+            properties: {}
+security: []
